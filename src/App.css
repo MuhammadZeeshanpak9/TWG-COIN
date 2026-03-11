@@ -1,0 +1,76 @@
+/* App-specific styles */
+
+/* Ensure smooth scrolling behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Pin spacer styling for GSAP */
+.pin-spacer {
+  pointer-events: none !important;
+}
+
+.pin-spacer > * {
+  pointer-events: auto !important;
+}
+
+/* Section base styles */
+section {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Card hover effects */
+.group:hover .group-hover\:translate-x-1 {
+  transform: translateX(4px);
+}
+
+/* Button hover lift */
+button:hover,
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Form input focus states */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.18);
+}
+
+/* Responsive typography adjustments */
+@media (max-width: 640px) {
+  .font-heading {
+    letter-spacing: 0.01em;
+  }
+}
+
+/* Ensure images don't overflow */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Loading state for images */
+img[src=""] {
+  visibility: hidden;
+}
+
+/* Custom focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid rgba(15, 23, 42, 0.6);
+  outline-offset: 2px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
