@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Navigation } from './components/Navigation';
 import { Footer } from './components/Footer';
-import { CrystalBackground } from './components/CrystalBackground';
+import { FinancialGraphBackground } from './components/FinancialGraphBackground';
 import { ThreeDCoinsBackground } from './components/ThreeDCoinsBackground';
 import { HeroSection } from './sections/HeroSection';
 import { CoinStatementSection } from './sections/CoinStatementSection';
@@ -72,7 +72,7 @@ function App() {
   return (
     <div className="relative bg-white min-h-screen">
       {/* Global Background Layer */}
-      <CrystalBackground />
+      <FinancialGraphBackground />
       <ThreeDCoinsBackground />
 
       <Navigation />

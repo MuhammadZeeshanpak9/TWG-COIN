@@ -80,7 +80,7 @@ export function CoinStatementSection() {
               transition={{ delay: 0.2 }}
               className="text-lavender-300 text-xl leading-relaxed max-w-xl"
             >
-              TWGC powers a multi-dimensional ecosystem, from AI-driven utilities 
+              WGC powers a multi-dimensional ecosystem, from AI-driven utilities 
               to exclusive digital experiences. It is the fuel for our shared future.
             </motion.p>
             

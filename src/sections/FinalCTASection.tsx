@@ -64,7 +64,7 @@ export function FinalCTASection() {
               READY TO OWN <br /> <span className="text-brand-purple">THE FUTURE?</span>
             </h2>
             <p className="text-lavender-300 text-lg">
-              Get updates, early access, and collaboration opportunities in the TWGC ecosystem.
+              Get updates, early access, and collaboration opportunities in the WGC ecosystem.
             </p>
           </div>
 

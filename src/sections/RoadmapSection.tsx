@@ -19,7 +19,7 @@ const phases = [
   {
     phase: 'Phase 3',
     title: 'Liquidity & Public Trading',
-    description: 'Creating liquidity pool on PancakeSwap. Making TWGC tradable using MetaMask and Trust Wallet.',
+    description: 'Creating liquidity pool on PancakeSwap. Making WGC tradable using MetaMask and Trust Wallet.',
     icon: Landmark,
   },
   {

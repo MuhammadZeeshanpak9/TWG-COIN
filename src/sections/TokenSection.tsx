@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const tokenData = [
   { label: 'Blockchain Network', value: 'BNB Smart Chain (BEP-20)', icon: <Landmark className="w-5 h-5" /> },
-  { label: 'Total Token Supply', value: '1,000,000,000 TWGC', icon: <Wallet className="w-5 h-5" /> },
+  { label: 'Total Token Supply', value: '1,000,000,000 WGC', icon: <Wallet className="w-5 h-5" /> },
   { label: 'Security Status', value: 'Verified & Audited', icon: <ShieldCheck className="w-5 h-5" /> },
 ];
 
@@ -45,11 +45,11 @@ export function TokenSection() {
           >
             <span className="font-mono-label text-brand-purple tracking-[0.2em] mb-4 block">ARCHITECTURE</span>
             <h2 className="text-5xl lg:text-7xl font-heading font-bold text-navy-1200 leading-tight">
-              THE <span className="text-brand-purple italic">TWGC</span> <br /> FOUNDATION
+              THE <span className="text-brand-purple italic">WGC</span> <br /> FOUNDATION
             </h2>
             <p className="text-lavender-300 text-xl max-w-xl leading-relaxed">
               Engineered for scalability and security on the BNB Smart Chain, 
-              providing a robust infrastructure for the global TWGC ecosystem.
+              providing a robust infrastructure for the global WGC ecosystem.
             </p>
             
             <div className="space-y-6 pt-8">

@@ -111,7 +111,7 @@ export function HeroSection() {
             variants={itemVariants}
             className="font-heading font-bold text-navy-1200 text-5xl sm:text-6xl md:text-7xl lg:text-9xl tracking-tight mb-8 max-w-5xl leading-[1.1]"
           >
-            TWGC: THE <span className="text-brand-purple italic">WORLD'S</span> <br /> GREATEST COIN
+            THE <span className="text-brand-purple italic">WORLD'S</span> <br /> GREATEST COIN
           </motion.h1>
 
           {/* Subheadline */}
