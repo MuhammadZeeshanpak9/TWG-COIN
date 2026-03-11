@@ -7,38 +7,70 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-function DataBeam({ position, height, delay }: { position: [number, number, number], height: number, delay: number }) {
-  const meshRef = useRef<THREE.Mesh>(null);
+const BRAND_COLOR = '#9f81b9';
+
+function Candlestick({ position, height, delay }: { position: [number, number, number], height: number, delay: number }) {
+  const meshRef = useRef<THREE.Group>(null);
   
   useFrame((state) => {
     if (!meshRef.current) return;
     const time = state.clock.getElapsedTime() + delay;
-    meshRef.current.scale.y = 1 + Math.sin(time * 0.5) * 0.2;
-    meshRef.current.position.y = (height * meshRef.current.scale.y) / 2;
+    const pulse = 1 + Math.sin(time * 0.8) * 0.1;
+    meshRef.current.scale.y = pulse;
   });
 
   return (
-    <mesh ref={meshRef} position={position}>
-      <boxGeometry args={[0.05, height, 0.05]} />
-      <meshStandardMaterial 
-        color="#9f81b9" 
-        transparent 
-        opacity={0.6} 
-        emissive="#9f81b9"
-        emissiveIntensity={0.5}
-      />
-    </mesh>
+    <group position={position} ref={meshRef}>
+      {/* The Wick */}
+      <mesh position={[0, 0, 0]}>
+        <boxGeometry args={[0.02, height * 1.5, 0.02]} />
+        <meshStandardMaterial color={BRAND_COLOR} transparent opacity={0.3} />
+      </mesh>
+      {/* The Body */}
+      <mesh position={[0, 0, 0]}>
+        <boxGeometry args={[0.15, height, 0.15]} />
+        <meshStandardMaterial 
+          color={BRAND_COLOR} 
+          transparent 
+          opacity={0.6} 
+          emissive={BRAND_COLOR}
+          emissiveIntensity={0.5}
+        />
+      </mesh>
+    </group>
+  );
+}
+
+function TrendLine({ points, color, opacity, delay }: { points: [number, number, number][], color: string, opacity: number, delay: number }) {
+  const lineRef = useRef<any>(null);
+
+  useFrame((state) => {
+    if (!lineRef.current) return;
+    const time = state.clock.getElapsedTime() + delay;
+    lineRef.current.position.y = Math.sin(time * 0.5) * 0.2;
+  });
+
+  return (
+    <Line
+      ref={lineRef}
+      points={points}
+      color={color}
+      lineWidth={2}
+      transparent
+      opacity={opacity}
+    />
   );
 }
 
 function Grid() {
-  const size = 100;
-  const divisions = 50;
+  const size = 120;
+  const divisions = 60;
   return (
     <gridHelper 
-      args={[size, divisions, '#9f81b9', '#cbd5e1']} 
-      position={[0, -2, 0]} 
-      rotation={[0, 0, 0]}
+      args={[size, divisions, BRAND_COLOR, '#cbd5e1']} 
+      position={[0, -4, 0]} 
+      transparent
+      opacity={0.15}
     />
   );
 }
@@ -48,16 +80,37 @@ function Scene() {
   const scrollPos = useRef(0);
   const mouse = useRef({ x: 0, y: 0 });
 
-  const beams = useMemo(() => {
-    return Array.from({ length: 80 }, () => ({
+  const candlesticks = useMemo(() => {
+    return Array.from({ length: 120 }, (_, i) => ({
       position: [
-        (Math.random() - 0.5) * 40,
-        -2,
-        (Math.random() - 0.5) * 30 - 10,
+        (Math.random() - 0.5) * 60,
+        -4 + (Math.random() * 2), // Slightly staggered height
+        (Math.random() - 0.5) * 40 - 10,
       ] as [number, number, number],
-      height: 2 + Math.random() * 8,
-      delay: Math.random() * 10,
+      height: 0.5 + Math.random() * 3,
+      delay: Math.random() * 5,
     }));
+  }, []);
+
+  const lines = useMemo(() => {
+    return Array.from({ length: 4 }, (_, i) => {
+      const startX = (Math.random() - 0.5) * 40;
+      const startZ = (Math.random() - 0.5) * 20 - 5;
+      const pts: [number, number, number][] = [];
+      for (let j = 0; j < 15; j++) {
+        pts.push([
+          startX + j * 3,
+          -2 + Math.random() * 6,
+          startZ + (Math.random() - 0.5) * 5
+        ]);
+      }
+      return { 
+        points: pts, 
+        color: i % 2 === 0 ? BRAND_COLOR : '#A78BFA',
+        opacity: 0.2 + Math.random() * 0.3,
+        delay: Math.random() * 10 
+      };
+    });
   }, []);
 
   useEffect(() => {
@@ -88,11 +141,11 @@ function Scene() {
     if (!groupRef.current) return;
     
     // Smooth vertical scroll movement
-    const targetY = scrollPos.current * 10;
+    const targetY = scrollPos.current * 8;
     groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, 0.05);
     
-    // Subtle Mouse Tilt (Focused on the ground plane)
-    const targetRotationX = 0.5 + mouse.current.y * 0.1;
+    // Mouse Tilt 
+    const targetRotationX = 0.3 + mouse.current.y * 0.08;
     const targetRotationY = mouse.current.x * 0.1;
     
     groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetRotationX, 0.05);
@@ -105,28 +158,35 @@ function Scene() {
 
   return (
     <group ref={groupRef}>
-      <ambientLight intensity={0.7} />
-      <pointLight position={[20, 20, 20]} intensity={2.5} color="#9f81b9" />
-      <spotLight position={[-15, 30, 15]} angle={0.25} penumbra={1} intensity={4} color="#ffffff" />
+      <ambientLight intensity={0.8} />
+      <pointLight position={[20, 20, 20]} intensity={2} color={BRAND_COLOR} />
+      <spotLight position={[-20, 40, 20]} angle={0.2} penumbra={1} intensity={5} color="#ffffff" />
       
       <Grid />
       
-      {beams.map((b, i) => (
-        <DataBeam key={i} {...b} />
+      {candlesticks.map((c, i) => (
+        <Candlestick key={i} {...c} />
       ))}
 
-      {/* Adding more grounded chart lines */}
-      <Float speed={2} rotationIntensity={0.1} floatIntensity={0.4}>
-        <Line
-          points={[[-15, -1, -10], [-5, 2, -5], [5, 0, 0], [15, 4, 5]]}
-          color="#9f81b9"
-          lineWidth={2}
-          transparent
-          opacity={0.3}
-        />
-      </Float>
+      {lines.map((l, i) => (
+        <TrendLine key={i} {...l} />
+      ))}
 
-      <fog attach="fog" args={['#ffffff', 10, 40]} />
+      {/* Floating Sparkles to replicate those data points in the image */}
+      {Array.from({ length: 50 }).map((_, i) => (
+        <Float key={i} speed={2 + Math.random()} floatIntensity={1} rotationIntensity={0}>
+          <mesh position={[
+            (Math.random() - 0.5) * 60,
+            (Math.random() - 0.5) * 20,
+            (Math.random() - 0.5) * 30 - 10
+          ]}>
+            <sphereGeometry args={[0.03, 8, 8]} />
+            <meshStandardMaterial color={BRAND_COLOR} emissive={BRAND_COLOR} emissiveIntensity={2} />
+          </mesh>
+        </Float>
+      ))}
+
+      <fog attach="fog" args={['#ffffff', 15, 50]} />
     </group>
   );
 }
@@ -138,7 +198,7 @@ export function FinancialGraphBackground() {
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true }}
       >
-        <PerspectiveCamera makeDefault position={[0, 2, 20]} fov={45} />
+        <PerspectiveCamera makeDefault position={[0, 3, 25]} fov={40} />
         <Scene />
       </Canvas>
     </div>
