@@ -66,14 +66,18 @@ export function FinancialGraphBackground() {
       { points: createHeartbeatLine(height * 0.5, 50), alpha: 0.15, scrollSpeed: 0.6 }
     ];
 
-    // Ultra-Sleek, Long Candlesticks (Thinner Width, Maintained Length)
-    const candlesticks = Array.from({ length: 40 }, (_, i) => ({
-      x: (i / 40) * width,
-      w: 8 + Math.random() * 8, // Thinner Width (8-16px)
-      h: 120 + Math.random() * 200, // Maintained Length (120-320px)
+    // Responsive Candlestick Logic
+    const isMobile = width < 768;
+    const candlestickCount = isMobile ? Math.floor(width / 45) : 40; // Fewer candles on mobile to prevent clutter
+
+    // Ultra-Sleek, Long Candlesticks
+    const candlesticks = Array.from({ length: candlestickCount }, (_, i) => ({
+      x: (i / candlestickCount) * width,
+      w: (isMobile ? 6 : 8) + Math.random() * 8, // Thinner on mobile (6-14px)
+      h: (isMobile ? 100 : 120) + Math.random() * 200, // Slightly shorter on mobile
       isProfit: Math.random() > 0.5,
       phase: Math.random() * Math.PI * 2,
-      yOffset: (Math.random() - 0.5) * height * 0.3
+      yOffset: (Math.random() - 0.5) * height * (isMobile ? 0.2 : 0.3)
     }));
 
     const draw = (time: number) => {
