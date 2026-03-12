@@ -62,8 +62,8 @@ export function FinancialGraphBackground() {
     };
 
     const lines = [
-      { points: createHeartbeatLine(height * 0.4, 40), alpha: 0.2, scrollSpeed: 0.4 },
-      { points: createHeartbeatLine(height * 0.5, 50), alpha: 0.15, scrollSpeed: 0.6 }
+      { points: createHeartbeatLine(height * 0.4, 40), alpha: 0.4, scrollSpeed: 0.4 }, // Increased alpha (from 0.2)
+      { points: createHeartbeatLine(height * 0.5, 50), alpha: 0.3, scrollSpeed: 0.6 }   // Increased alpha (from 0.15)
     ];
 
     // Responsive Candlestick Logic
@@ -142,7 +142,7 @@ export function FinancialGraphBackground() {
           ctx.lineTo(dx2, dy2);
           ctx.strokeStyle = dy2 < dy1 - 5 ? PROFIT_COLOR : dy2 > dy1 + 5 ? LOSS_COLOR : BRAND_COLOR;
           ctx.globalAlpha = line.alpha * 1.5;
-          ctx.lineWidth = 1.5;
+          ctx.lineWidth = 2.5; // Increased width (from 1.5)
           ctx.stroke();
         }
       });
@@ -162,9 +162,9 @@ export function FinancialGraphBackground() {
 
         ctx.strokeStyle = c.isProfit ? PROFIT_COLOR : LOSS_COLOR;
         ctx.fillStyle = c.isProfit ? PROFIT_COLOR : LOSS_COLOR;
-
-        // Highlight active feeling
-        ctx.globalAlpha = 0.25 + Math.abs(hPulse) * 0.02;
+        
+        // Very faint background presence
+        ctx.globalAlpha = 0.03; // Significantly reduced
 
         // Wick
         ctx.lineWidth = 2;
